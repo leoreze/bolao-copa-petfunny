@@ -12,7 +12,9 @@ const state = {
   knockout: [],
   standingsUpdatedAt: '',
   rules: null,
-  prizes: []
+  prizes: [],
+  loginTodayGames: [],
+  loginTodayGamesLoaded: false
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -618,6 +620,58 @@ async function loadStandings() {
   renderStandings();
 }
 
+function loginGameLine(game = {}) {
+  const group = gameGroup(game);
+  const teams = `${escapeHtml(game.team1Name || 'Time 1')} x ${escapeHtml(game.team2Name || 'Time 2')}`;
+  const meta = `${escapeHtml(game.roundName || 'Fase de Grupos')} · ${formatDate(game.matchDate, game.matchTime)}`;
+  return `
+    <article class="login-game-item">
+      <div class="login-game-flags" aria-hidden="true">
+        ${teamFlagHtml(game.team1Flag, game.team1Code)}
+        <span>×</span>
+        ${teamFlagHtml(game.team2Flag, game.team2Code)}
+      </div>
+      <div class="login-game-copy">
+        <strong>${teams}</strong>
+        <span>${escapeHtml(group)}</span>
+        <small>${meta}</small>
+      </div>
+    </article>
+  `;
+}
+
+function renderLoginTodayGames() {
+  const list = $('#loginTodayGamesList');
+  if (!list) return;
+  const games = state.loginTodayGames || [];
+  if (!state.loginTodayGamesLoaded) {
+    list.innerHTML = '<div class="login-game-skeleton">Carregando jogos de hoje...</div>';
+    return;
+  }
+  if (!games.length) {
+    list.innerHTML = `
+      <div class="login-games-empty">
+        <strong>Nenhum jogo aberto hoje.</strong>
+        <span>Cadastre-se para acompanhar os próximos jogos e receber seu palpite liberado após o pagamento.</span>
+      </div>
+    `;
+    return;
+  }
+  list.innerHTML = games.slice(0, 4).map(loginGameLine).join('');
+}
+
+async function loadLoginTodayGames() {
+  try {
+    const data = await api('/api/app/public/today-games');
+    state.loginTodayGames = data.games || [];
+  } catch (_error) {
+    state.loginTodayGames = [];
+  } finally {
+    state.loginTodayGamesLoaded = true;
+    renderLoginTodayGames();
+  }
+}
+
 function formatDateTime(value) {
   if (!value) return '-';
   const date = new Date(value);
@@ -655,6 +709,7 @@ function logout() {
   state.tutor = null;
   state.bolao = null;
   showView('loginView');
+  if (!state.loginTodayGamesLoaded) loadLoginTodayGames(); else renderLoginTodayGames();
 }
 
 async function authenticate(path, form) {
@@ -734,9 +789,11 @@ if (resetToken) {
   showApp();
 } else {
   showView('loginView');
+  loadLoginTodayGames();
 }
 
 $('#showRegisterBtn').addEventListener('click', () => showView('registerView'));
+document.querySelectorAll('[data-login-register-cta]').forEach((button) => button.addEventListener('click', () => showView('registerView')));
 $('#showForgotBtn').addEventListener('click', () => showView('forgotView'));
 $('#backToLoginFromRegister').addEventListener('click', () => showView('loginView'));
 $('#backToLoginFromForgot').addEventListener('click', () => showView('loginView'));

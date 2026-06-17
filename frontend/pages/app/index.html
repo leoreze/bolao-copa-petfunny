@@ -8,34 +8,49 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png" />
   <link rel="apple-touch-icon" href="/assets/img/icon-192.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=0.2.25" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=0.2.26" />
 </head>
 <body>
   <div id="authLogo" class="auth-page-logo">
     <img src="/assets/img/bolao-logo.png" alt="Bolão da Copa Pet Funny" />
   </div>
 
-  <main id="loginView" class="login-card card auth-card">
-    <h1>Entrar</h1>
-    <p class="auth-copy">Acesse com seu e-mail e senha para ver os jogos, pagar sua participação e enviar seus palpites.</p>
+  <section id="loginView" class="auth-login-layout">
+    <main class="login-card card auth-card">
+      <h1>Entrar</h1>
+      <p class="auth-copy">Acesse com seu e-mail e senha para ver os jogos, pagar sua participação e enviar seus palpites.</p>
 
-    <form id="loginForm" class="form-grid">
-      <div>
-        <label>E-mail</label>
-        <input name="email" type="email" autocomplete="username" placeholder="seuemail@email.com" required />
-      </div>
-      <div>
-        <label>Senha</label>
-        <input name="password" type="password" autocomplete="current-password" required />
-      </div>
-      <button class="btn btn-primary btn-full">Entrar</button>
-    </form>
+      <form id="loginForm" class="form-grid">
+        <div>
+          <label>E-mail</label>
+          <input name="email" type="email" autocomplete="username" placeholder="seuemail@email.com" required />
+        </div>
+        <div>
+          <label>Senha</label>
+          <input name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <button class="btn btn-primary btn-full">Entrar</button>
+      </form>
 
-    <div class="auth-login-actions" aria-label="Ações de acesso">
-      <button id="showRegisterBtn" class="auth-register-button" type="button">Cadastrar</button>
-      <button id="showForgotBtn" class="auth-forgot-button" type="button">Esqueci a senha</button>
-    </div>
-  </main>
+      <div class="auth-login-actions" aria-label="Ações de acesso">
+        <button id="showRegisterBtn" class="auth-register-button" type="button">Cadastrar</button>
+        <button id="showForgotBtn" class="auth-forgot-button" type="button">Esqueci a senha</button>
+      </div>
+    </main>
+
+    <aside id="loginTodayGamesCard" class="card login-games-card" aria-label="Jogos do dia">
+      <span class="login-games-eyebrow">Jogos de hoje</span>
+      <h2>Dê seu palpite na Copa</h2>
+      <p>Veja os jogos abertos hoje, cadastre-se grátis e participe do bolão com segurança.</p>
+      <div id="loginTodayGamesList" class="login-games-list">
+        <div class="login-game-skeleton">Carregando jogos de hoje...</div>
+      </div>
+      <button class="btn btn-primary btn-full login-games-cta" type="button" data-login-register-cta>
+        Quero dar meu palpite
+      </button>
+      <small>Ao cadastrar, você já entra no app para pagar sua participação e enviar o placar.</small>
+    </aside>
+  </section>
 
   <main id="registerView" class="login-card card auth-card hidden">
     <h1>Cadastrar</h1>
@@ -244,6 +259,6 @@
   </div>
 
   <div id="toast" class="toast hidden"></div>
-  <script type="module" src="/assets/js/app.js?v=0.2.23"></script>
+  <script type="module" src="/assets/js/app.js?v=0.2.26"></script>
 </body>
 </html>

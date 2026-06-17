@@ -1495,3 +1495,171 @@ body.modal-open { overflow: hidden; }
 .auth-forgot-button:hover {
   color: var(--muted);
 }
+
+
+/* v0.2.26 — login com jogos do dia ao lado do formulário */
+.auth-login-layout {
+  width: min(980px, calc(100% - 28px));
+  margin: 12px auto 0;
+  display: grid;
+  grid-template-columns: minmax(0, 460px) minmax(280px, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.auth-login-layout .login-card {
+  width: 100%;
+  margin: 0;
+}
+
+.login-games-card {
+  padding: 24px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+  position: relative;
+  background:
+    radial-gradient(circle at top right, rgba(1, 173, 183, .18), transparent 34%),
+    linear-gradient(180deg, #ffffff, #f8fdfe);
+}
+
+.login-games-card::after {
+  content: "";
+  position: absolute;
+  right: -34px;
+  bottom: -42px;
+  width: 160px;
+  height: 160px;
+  background: url('/assets/img/bolao-logo.png') center / contain no-repeat;
+  opacity: .08;
+  pointer-events: none;
+}
+
+.login-games-eyebrow {
+  width: max-content;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(1, 173, 183, .10);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.login-games-card h2 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -.055em;
+}
+
+.login-games-card p {
+  margin: -4px 0 0;
+  color: var(--muted);
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.login-games-list {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.login-game-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(230, 238, 245, .95);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .86);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, .06);
+}
+
+.login-game-flags {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-weight: 1000;
+}
+
+.login-game-flags .team-flag-img {
+  width: 26px;
+  height: 18px;
+  border-radius: 5px;
+}
+
+.login-game-copy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.login-game-copy strong,
+.login-game-copy span,
+.login-game-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.login-game-copy strong {
+  font-size: 14px;
+  letter-spacing: -.02em;
+}
+
+.login-game-copy span {
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.login-game-copy small,
+.login-games-card small,
+.login-game-skeleton,
+.login-games-empty span {
+  color: #94a3b8;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.login-games-empty {
+  display: grid;
+  gap: 6px;
+  padding: 16px;
+  border: 1px dashed rgba(1, 173, 183, .25);
+  border-radius: 20px;
+  background: rgba(1, 173, 183, .05);
+}
+
+.login-games-empty strong {
+  font-size: 14px;
+}
+
+.login-games-cta {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+}
+
+@media (max-width: 860px) {
+  .auth-login-layout {
+    grid-template-columns: 1fr;
+    width: min(460px, calc(100% - 28px));
+  }
+  .login-games-card {
+    padding: 22px;
+  }
+  .login-games-card h2 {
+    font-size: 26px;
+  }
+}

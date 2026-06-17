@@ -1552,6 +1552,32 @@ app.patch('/api/bolao-copa/predictions/:id/award', requireAdmin, async (req, res
   } catch (error) { next(error); }
 });
 
+app.get('/api/app/public/today-games', async (_req, res, next) => {
+  try {
+    await closeGamesForPredictionDeadline();
+    const result = await query(`
+      SELECT g.*,
+             ((g.match_date + COALESCE(g.match_time, TIME '16:00')) > ((NOW() AT TIME ZONE 'America/Sao_Paulo') + ($1::int * INTERVAL '1 minute')) AND g.status IN ('scheduled','open')) AS is_open,
+             COALESCE(stats.accumulated_cents, 0)::int AS accumulated_cents,
+             COALESCE(stats.participants_count, 0)::int AS participants_count
+      FROM world_cup_games g
+      LEFT JOIN LATERAL (
+        SELECT COALESCE(SUM(bp.amount_cents) FILTER (WHERE bp.status='approved'), 0)::int AS accumulated_cents,
+               COUNT(bp.id) FILTER (WHERE bp.status='approved')::int AS participants_count
+        FROM bolao_payments bp
+        WHERE bp.game_id = g.id AND bp.deleted_at IS NULL
+      ) stats ON TRUE
+      WHERE g.deleted_at IS NULL
+        AND g.is_active = TRUE
+        AND g.status <> 'canceled'
+        AND g.match_date = (NOW() AT TIME ZONE 'America/Sao_Paulo')::date
+      ORDER BY g.match_time ASC, g.created_at DESC
+      LIMIT 8
+    `, [PREDICTION_CLOSE_MINUTES]);
+    res.json({ ok: true, games: result.rows.map(sanitizeGame), date: toIsoDate(new Date()) });
+  } catch (error) { next(error); }
+});
+
 app.get('/api/app/bolao-copa', requireTutor, async (req, res, next) => {
   try {
     res.json(await getTutorBolaoPayload(req.tutor.id));
