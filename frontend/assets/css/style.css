@@ -1453,3 +1453,45 @@ body.modal-open { overflow: hidden; }
     flex-direction: column;
   }
 }
+
+/* v0.2.25 — login: cadastrar destacado e esqueci senha discreto */
+.auth-login-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.auth-register-button {
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid rgba(1, 173, 183, .28);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(1, 173, 183, .12), rgba(1, 173, 183, .06));
+  color: var(--teal);
+  font-weight: 950;
+  font-size: 15px;
+  box-shadow: 0 14px 34px rgba(1, 173, 183, .10);
+}
+
+.auth-register-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 42px rgba(1, 173, 183, .14);
+}
+
+.auth-forgot-button {
+  justify-self: center;
+  border: 0;
+  background: transparent;
+  color: #94a3b8;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 850;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.auth-forgot-button:hover {
+  color: var(--muted);
+}

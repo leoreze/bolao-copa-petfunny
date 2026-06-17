@@ -424,3 +424,10 @@ npm install --prefix backend
 ```
 
 Assim, pacotes como `dotenv`, `express`, `pg`, `jsonwebtoken`, `bcryptjs` e `nodemailer` ficam disponíveis para `backend/src/server.js`.
+
+
+## v0.2.25 — Ajuste visual do login do app
+
+- No `/app`, o botão/link **Cadastrar** agora fica destacado logo abaixo do botão **Entrar**.
+- O link **Esqueci a senha** fica abaixo de **Cadastrar**, discreto e centralizado.
+- Ajuste apenas visual, sem alteração de banco de dados.
