@@ -404,3 +404,23 @@ npm start
 - Botão **Salvar Pix de resgate** em linha própria com 100% de largura.
 - Mais espaçamento vertical entre formulário, botão e texto de segurança.
 - Cache busting atualizado para `v=0.2.23`.
+
+
+## Correção Render v0.2.24 — dependências do backend
+
+Se o Render mostrar o erro `Cannot find package 'dotenv'`, significa que o serviço instalou dependências na raiz, mas não instalou as dependências dentro da pasta `backend`.
+
+Use no Render:
+
+```bash
+Build Command: npm run render:build
+Start Command: npm run render:start
+```
+
+A raiz do projeto também possui `postinstall`, que executa:
+
+```bash
+npm install --prefix backend
+```
+
+Assim, pacotes como `dotenv`, `express`, `pg`, `jsonwebtoken`, `bcryptjs` e `nodemailer` ficam disponíveis para `backend/src/server.js`.

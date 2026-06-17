@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: bolao-copa-petfunny
+    env: node
+    plan: free
+    buildCommand: npm run render:build
+    startCommand: npm run render:start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_SSL
+        value: auto
+      - key: MERCADO_PAGO_AUTO_RETURN
+        value: auto
+      - key: PAYMENT_DEMO_AUTOPAY
+        value: false

@@ -1,6 +1,6 @@
 {
   "name": "bolao-copa-petfunny-backend",
-  "version": "0.2.18",
+  "version": "0.2.24",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
