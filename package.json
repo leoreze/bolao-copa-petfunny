@@ -1,0 +1,19 @@
+{
+  "name": "bolao-copa-petfunny",
+  "version": "0.2.18",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npm --prefix backend start",
+    "dev": "npm --prefix backend run dev",
+    "db:migrate": "npm --prefix backend run db:migrate",
+    "db:seed": "npm --prefix backend run db:seed",
+    "db:start": "docker compose up -d postgres",
+    "db:stop": "docker compose down",
+    "db:logs": "docker compose logs -f postgres"
+  },
+  "engines": {
+    "node": ">=20 <25",
+    "npm": ">=10"
+  }
+}

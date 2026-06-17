@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin | Bolão da Copa PetFunny</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="/assets/img/icon-192.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=0.2.19" />
+</head>
+<body>
+  <main id="loginView" class="login-card card auth-card">
+    <div class="brand" style="margin-bottom:18px">
+      <div class="brand-mark logo-mark"><img src="/assets/img/bolao-logo.png" alt="Bolão da Copa Pet Funny" /></div>
+      <div>Bolão da Copa<small>Admin PetFunny</small></div>
+    </div>
+    <h1>Admin</h1>
+    <p class="auth-copy">Acesse para cadastrar jogos, valores por bolão, pagamentos, tabela da Copa, usuários e palpites.</p>
+    <form id="loginForm" class="form-grid">
+      <div>
+        <label>E-mail admin</label>
+        <input name="email" type="email" autocomplete="username" value="admin@petfunny.com.br" required />
+      </div>
+      <div>
+        <label>Senha</label>
+        <input name="password" type="password" autocomplete="current-password" value="petfunny123" required />
+      </div>
+      <button class="btn btn-primary btn-full">Entrar no admin</button>
+    </form>
+    <p class="copyright">2026 © Bolão da Copa Pet Funny.</p>
+  </main>
+
+  <main id="adminView" class="page-shell hidden">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark logo-mark"><img src="/assets/img/bolao-logo.png" alt="Bolão da Copa Pet Funny" /></div>
+        <div>Bolão da Copa<small>Admin PetFunny</small></div>
+      </div>
+      <div class="actions">
+        <a class="btn" href="/app" target="_blank">Abrir app</a>
+        <button id="logoutBtn" class="btn btn-danger">Sair</button>
+      </div>
+    </header>
+
+    <section class="container stack">
+      <article class="hero card admin-hero">
+        <div>
+          <h1>Painel do Bolão da Copa.</h1>
+          <p>Gerencie jogos, pagamentos, palpites dos usuários, tabela da Copa e participantes cadastrados em telas separadas.</p>
+        </div>
+        <div class="hero-actions">
+          <button id="newGameBtn" class="btn btn-ghost">+ Novo jogo</button>
+          <button id="refreshBtn" class="btn btn-ghost">Atualizar tudo</button>
+        </div>
+      </article>
+
+      <section class="grid grid-4" id="summaryGrid"></section>
+
+      <nav id="adminSectionNav" class="admin-section-nav" aria-label="Menu administrativo do bolão">
+        <button class="admin-nav-card active" type="button" data-section-target="games">
+          <span>⚽</span><strong>Jogos cadastrados</strong><small>Cadastrar, editar, apurar e excluir partidas.</small>
+        </button>
+        <button class="admin-nav-card" type="button" data-section-target="payments">
+          <span>💳</span><strong>Pagamentos do bolão</strong><small>PIX, cartão, pendentes e aprovados.</small>
+        </button>
+        <button class="admin-nav-card" type="button" data-section-target="predictions">
+          <span>🎯</span><strong>Palpites dos Usuários</strong><small>Palpites enviados e premiações.</small>
+        </button>
+        <button class="admin-nav-card" type="button" data-section-target="standings">
+          <span>🏆</span><strong>Tabela da Copa</strong><small>Grupos oficiais 2026 e mata-mata atualizado pelos jogos.</small>
+        </button>
+        <button class="admin-nav-card" type="button" data-section-target="users">
+          <span>👥</span><strong>Usuários cadastrados</strong><small>Participantes, WhatsApp e histórico.</small>
+        </button>
+      </nav>
+
+      <section class="card panel admin-section" data-section="games">
+        <div class="section-title" style="margin-top:0">
+          <div>
+            <h2>Jogos cadastrados</h2>
+            <p class="section-subtitle">Todos os jogos criados para o bolão, com valor, acumulado e ações por menu.</p>
+          </div>
+          <button class="btn btn-primary" id="newGameBtnInline">+ Novo jogo</button>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Grupo</th><th>Jogo</th><th>Valor / acumulado</th><th>Data</th><th>Status</th><th>Placar</th><th>Palpites</th><th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="gamesTable"></tbody>
+          </table>
+        </div>
+        <div id="gamesEmpty" class="empty hidden">Nenhum jogo cadastrado ainda.</div>
+      </section>
+
+      <section class="card panel admin-section hidden" data-section="payments">
+        <div class="section-title" style="margin-top:0">
+          <div>
+            <h2>Pagamentos do bolão</h2>
+            <p class="section-subtitle">Acompanhe pagamentos criados no Mercado Pago e aprove manualmente em suporte.</p>
+          </div>
+          <div class="actions">
+            <select id="paymentStatusFilter" style="width:auto">
+              <option value="">Todos</option>
+              <option value="pending">Pendentes</option>
+              <option value="approved">Aprovados</option>
+              <option value="rejected">Recusados</option>
+              <option value="cancelled">Cancelados</option>
+            </select>
+            <button class="btn" id="reloadPaymentsBtn">Atualizar</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Participante</th><th>Jogo</th><th>Valor</th><th>Status</th><th>Método</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="paymentsTable"></tbody>
+          </table>
+        </div>
+        <div id="paymentsEmpty" class="empty hidden">Nenhum pagamento gerado ainda.</div>
+      </section>
+
+      <section class="card panel admin-section hidden" data-section="predictions">
+        <div class="section-title" style="margin-top:0">
+          <div>
+            <h2>Palpites dos Usuários</h2>
+            <p class="section-subtitle">Veja os palpites enviados pelos participantes e marque prêmios entregues.</p>
+          </div>
+          <div class="actions">
+            <select id="predictionStatusFilter" style="width:auto">
+              <option value="">Todos</option>
+              <option value="pending">Pendentes</option>
+              <option value="correct">Acertaram</option>
+              <option value="wrong">Erraram</option>
+              <option value="awarded">Prêmio entregue</option>
+            </select>
+            <button class="btn" id="reloadPredictionsBtn">Atualizar</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Usuário</th><th>Jogo</th><th>Palpite</th><th>Status</th><th>Enviado</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="predictionsTable"></tbody>
+          </table>
+        </div>
+        <div id="predictionsEmpty" class="empty hidden">Nenhum palpite recebido ainda.</div>
+      </section>
+
+      <section class="card panel admin-section hidden" data-section="standings">
+        <div class="section-title" style="margin-top:0">
+          <div>
+            <h2>Tabela da Copa</h2>
+            <p class="section-subtitle">Tabela da Copa 2026 com todos os grupos A–L. Ao finalizar jogos, a classificação e o mata-mata são atualizados automaticamente.</p>
+          </div>
+          <button class="btn" id="reloadStandingsBtn">Atualizar tabela</button>
+        </div>
+        <div id="standingsContainer" class="standings-grid"></div>
+        <div id="standingsEmpty" class="empty hidden">Cadastre jogos com grupo para montar a tabela da Copa.</div>
+      </section>
+
+      <section class="card panel admin-section hidden" data-section="users">
+        <div class="section-title" style="margin-top:0">
+          <div>
+            <h2>Usuários cadastrados</h2>
+            <p class="section-subtitle">Lista de participantes cadastrados no app com e-mail, WhatsApp e participação no bolão.</p>
+          </div>
+          <button class="btn" id="reloadUsersBtn">Atualizar usuários</button>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Usuário</th><th>WhatsApp</th><th>Pagamentos</th><th>Palpites</th><th>Cadastro</th></tr>
+            </thead>
+            <tbody id="usersTable"></tbody>
+          </table>
+        </div>
+        <div id="usersEmpty" class="empty hidden">Nenhum usuário cadastrado ainda.</div>
+      </section>
+    </section>
+  </main>
+
+  <div id="gameModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gameFormTitle">
+    <section class="modal-card premium-modal">
+      <header class="modal-header">
+        <div>
+          <h2 id="gameFormTitle">Novo jogo</h2>
+          <p id="gameFormSubtitle">Cadastre grupo, seleções, data, valor do bolão e status da partida.</p>
+        </div>
+        <button id="cancelGameBtn" class="modal-close" type="button" aria-label="Fechar modal">×</button>
+      </header>
+      <div class="modal-body">
+        <form id="gameForm" class="form-grid">
+          <input type="hidden" name="id" />
+          <input type="hidden" name="team1Name" />
+          <input type="hidden" name="team1Flag" />
+          <input type="hidden" name="team2Name" />
+          <input type="hidden" name="team2Flag" />
+          <input type="hidden" name="title" />
+
+          <div class="form-row">
+            <div>
+              <label>Grupo</label>
+              <select name="groupName" id="groupSelect" required></select>
+            </div>
+            <div><label>Fase / rodada</label><input name="roundName" placeholder="Fase de grupos" /></div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label>Time 1</label>
+              <select name="team1Code" id="team1Select" required></select>
+            </div>
+            <div>
+              <label>Time 2</label>
+              <select name="team2Code" id="team2Select" required></select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div><label>Prêmio</label><input name="prizeDescription" value="Banho grátis PetFunny" /></div>
+            <div><label>Valor do bolão (R$)</label><input name="entryFee" inputmode="decimal" value="10,00" required /></div>
+          </div>
+          <div class="form-row">
+            <div><label>Data do jogo</label><input name="matchDate" type="date" required /></div>
+            <div><label>Horário</label><input name="matchTime" type="time" value="16:00" required /></div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label>Status</label>
+              <select name="status">
+                <option value="open">Aberto para palpites</option>
+                <option value="scheduled">Agendado</option>
+                <option value="closed">Encerrado para palpites</option>
+                <option value="finished">Finalizado</option>
+                <option value="canceled">Cancelado</option>
+              </select>
+            </div>
+            <div>
+              <label>Ativo?</label>
+              <select name="isActive">
+                <option value="true">Sim</option>
+                <option value="false">Não</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div><label id="team1ScoreLabel">Placar Time 1</label><input name="team1Score" type="number" min="0" max="99" placeholder="Só após o jogo" /></div>
+            <div><label id="team2ScoreLabel">Placar Time 2</label><input name="team2Score" type="number" min="0" max="99" placeholder="Só após o jogo" /></div>
+          </div>
+        </form>
+      </div>
+      <footer class="modal-footer">
+        <button class="btn" id="cancelGameFooterBtn" type="button">Cancelar</button>
+        <button class="btn btn-primary" id="saveGameBtn" type="submit" form="gameForm">Salvar jogo</button>
+      </footer>
+    </section>
+  </div>
+
+  <div id="confirmModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <section class="modal-card confirm-card">
+      <header class="modal-header compact">
+        <div>
+          <h2 id="confirmTitle">Confirmar ação</h2>
+          <p id="confirmMessage">Confirme para continuar.</p>
+        </div>
+      </header>
+      <footer class="modal-footer">
+        <button class="btn" id="confirmCancelBtn" type="button">Cancelar</button>
+        <button class="btn btn-danger" id="confirmOkBtn" type="button">Confirmar</button>
+      </footer>
+    </section>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script type="module" src="/assets/js/admin.js?v=0.2.19"></script>
+</body>
+</html>

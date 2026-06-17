@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bolão da Copa PetFunny</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="/assets/img/icon-192.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=0.2.23" />
+</head>
+<body>
+  <div id="authLogo" class="auth-page-logo">
+    <img src="/assets/img/bolao-logo.png" alt="Bolão da Copa Pet Funny" />
+  </div>
+
+  <main id="loginView" class="login-card card auth-card">
+    <h1>Entrar</h1>
+    <p class="auth-copy">Acesse com seu e-mail e senha para ver os jogos, pagar sua participação e enviar seus palpites.</p>
+
+    <form id="loginForm" class="form-grid">
+      <div>
+        <label>E-mail</label>
+        <input name="email" type="email" autocomplete="username" placeholder="seuemail@email.com" required />
+      </div>
+      <div>
+        <label>Senha</label>
+        <input name="password" type="password" autocomplete="current-password" required />
+      </div>
+      <button class="btn btn-primary btn-full">Entrar</button>
+    </form>
+
+    <div class="auth-links">
+      <button id="showRegisterBtn" type="button">Cadastrar</button>
+      <span>•</span>
+      <button id="showForgotBtn" type="button">Esqueci a senha</button>
+    </div>
+  </main>
+
+  <main id="registerView" class="login-card card auth-card hidden">
+    <h1>Cadastrar</h1>
+    <p class="auth-copy">Crie seu cadastro uma única vez. Depois você já entra logado no app do bolão.</p>
+
+    <form id="registerForm" class="form-grid">
+      <div>
+        <label>Nome completo</label>
+        <input name="fullName" autocomplete="name" placeholder="Ex: Paula Cristina Silva" required />
+      </div>
+      <div>
+        <label>E-mail</label>
+        <input name="email" type="email" autocomplete="email" placeholder="seuemail@email.com" required />
+      </div>
+      <div>
+        <label>WhatsApp com DDD</label>
+        <input name="whatsapp" inputmode="tel" autocomplete="tel" maxlength="15" placeholder="(16) 99999-9999" required />
+      </div>
+      <div>
+        <label>Senha</label>
+        <input name="password" type="password" autocomplete="new-password" minlength="6" placeholder="Mínimo 6 caracteres" required />
+      </div>
+      <div>
+        <label>Tipo da chave Pix <small>(opcional)</small></label>
+        <select name="pixKeyType">
+          <option value="cpf">CPF</option>
+          <option value="email">E-mail</option>
+          <option value="celular">Celular</option>
+          <option value="cnpj">CNPJ</option>
+          <option value="aleatoria">Chave aleatória</option>
+        </select>
+      </div>
+      <div>
+        <label>Chave Pix para resgate <small>(opcional)</small></label>
+        <input name="pixKey" autocomplete="off" placeholder="Cadastre para receber prêmios mais rápido" />
+      </div>
+      <button class="btn btn-primary btn-full">Cadastrar e entrar</button>
+    </form>
+
+    <div class="auth-links"><button id="backToLoginFromRegister" type="button">Já tenho cadastro</button></div>
+  </main>
+
+  <main id="forgotView" class="login-card card auth-card hidden">
+    <h1>Esqueci a senha</h1>
+    <p class="auth-copy">Informe seu e-mail cadastrado. Enviaremos um link para você cadastrar uma nova senha.</p>
+
+    <form id="forgotForm" class="form-grid">
+      <div>
+        <label>E-mail</label>
+        <input name="email" type="email" autocomplete="email" placeholder="seuemail@email.com" required />
+      </div>
+      <button class="btn btn-primary btn-full">Enviar link</button>
+    </form>
+
+    <div id="forgotDevLink" class="card panel mini-panel hidden"></div>
+    <div class="auth-links"><button id="backToLoginFromForgot" type="button">Voltar para o login</button></div>
+  </main>
+
+  <main id="resetView" class="login-card card auth-card hidden">
+    <h1>Cadastrar nova senha</h1>
+    <p class="auth-copy">Digite sua nova senha para voltar ao app do bolão.</p>
+
+    <form id="resetForm" class="form-grid">
+      <input name="token" type="hidden" />
+      <div>
+        <label>Nova senha</label>
+        <input name="password" type="password" autocomplete="new-password" minlength="6" required />
+      </div>
+      <button class="btn btn-primary btn-full">Salvar nova senha</button>
+    </form>
+
+    <div class="auth-links"><button id="backToLoginFromReset" type="button">Voltar para o login</button></div>
+  </main>
+
+  <footer id="authFooter" class="auth-page-footer">2026 © Bolão da Copa Pet Funny.</footer>
+
+  <main id="appView" class="page-shell hidden">
+    <header class="topbar app-topbar">
+      <div class="brand">
+        <div class="brand-mark logo-mark"><img src="/assets/img/bolao-logo.png" alt="Bolão da Copa Pet Funny" /></div>
+        <div>Bolão da Copa<small id="tutorName">Participante</small></div>
+      </div>
+      <button id="logoutBtn" class="btn btn-danger">Sair</button>
+    </header>
+
+    <section class="client-container stack">
+      <article class="client-hero card app-hero-card">
+        <div>
+          <h1>Bolão da Copa</h1>
+          <p>Pague sua participação, acompanhe o acumulado de cada jogo e envie seu palpite antes do fechamento.</p>
+        </div>
+      </article>
+
+      <div id="gameModeTabs" class="game-mode-tabs card app-main-tabs" aria-label="Navegação do app"></div>
+
+      <section class="grid grid-2" id="clientStats"></section>
+
+      <section id="appStandingsSection" class="app-standings-section card panel hidden">
+        <div class="section-title app-section-title">
+          <div>
+            <h2>Tabela da Copa</h2>
+            <p class="section-subtitle">Classificação dos grupos e mata-mata atualizados pelos resultados cadastrados no admin.</p>
+          </div>
+          <button id="closeStandingsBtn" class="btn" type="button">Voltar para jogos</button>
+        </div>
+        <div id="appStandingsContainer"></div>
+        <div id="appStandingsEmpty" class="empty hidden">Tabela ainda não carregada.</div>
+      </section>
+
+      <section id="appRulesSection" class="app-rules-section hidden">
+        <article class="card trust-card">
+          <span class="trust-badge">Transparência do bolão</span>
+          <h2>Regras claras, prêmio calculado no app e resgate via Pix</h2>
+          <p>Todo jogo mostra valor de participação, acumulado, taxa de operação, valor líquido para ganhadores e lista pública de palpites daquele jogo.</p>
+          <div class="trust-grid">
+            <div><strong>10%</strong><span>fica para operação do aplicativo</span></div>
+            <div><strong>90%</strong><span>vai para os ganhadores</span></div>
+            <div><strong>3 dias úteis</strong><span>prazo de pagamento do resgate via Pix</span></div>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="section-title app-section-title">
+            <div>
+              <h2>Regras do Bolão</h2>
+              <p class="section-subtitle">Leia antes de participar. As mesmas regras valem para todos os usuários.</p>
+            </div>
+          </div>
+          <ol id="rulesList" class="rules-list"></ol>
+        </article>
+
+        <article class="card panel">
+          <div class="section-title app-section-title">
+            <div>
+              <h2>Meu Pix de resgate</h2>
+              <p class="section-subtitle">Caso você ganhe, o resgate será pago na chave Pix cadastrada abaixo.</p>
+            </div>
+          </div>
+          <form id="pixForm" class="pix-form-grid">
+            <div>
+              <label>Tipo da chave Pix</label>
+              <select name="pixKeyType">
+                <option value="cpf">CPF</option>
+                <option value="email">E-mail</option>
+                <option value="celular">Celular</option>
+                <option value="cnpj">CNPJ</option>
+                <option value="aleatoria">Chave aleatória</option>
+              </select>
+            </div>
+            <div>
+              <label>Chave Pix</label>
+              <input name="pixKey" placeholder="Informe sua chave Pix" autocomplete="off" />
+            </div>
+            <button class="btn btn-primary" type="submit">Salvar Pix de resgate</button>
+          </form>
+          <small class="trust-note">O app nunca solicita senha bancária. Para resgate, usamos apenas a chave Pix informada.</small>
+        </article>
+
+        <article class="card panel">
+          <div class="section-title app-section-title">
+            <div>
+              <h2>Meus prêmios e resgates</h2>
+              <p class="section-subtitle">Quando seu palpite for ganhador, solicite o resgate por aqui.</p>
+            </div>
+          </div>
+          <div id="prizesList" class="stack"></div>
+          <div id="prizesEmpty" class="empty hidden">Você ainda não possui prêmio disponível para resgate.</div>
+        </article>
+      </section>
+
+      <section id="gamesContentSection">
+        <div class="section-title">
+          <h2 id="gamesSectionTitle">Jogos disponíveis para palpite</h2>
+          <button id="refreshBtn" class="btn">Atualizar</button>
+        </div>
+        <div class="filter-bar card">
+          <label for="groupFilter">Filtrar por grupo</label>
+          <select id="groupFilter">
+            <option value="">Todos os grupos</option>
+          </select>
+        </div>
+        <div id="gamesList" class="stack"></div>
+        <div id="gamesEmpty" class="empty card hidden">Nenhum jogo aberto para palpite no momento.</div>
+      </section>
+    </section>
+  </main>
+
+  <div id="gamePredictionsModal" class="modal-overlay hidden" aria-hidden="true">
+    <section class="modal-card premium-modal app-predictions-modal" role="dialog" aria-modal="true" aria-labelledby="gamePredictionsTitle">
+      <header class="modal-header compact">
+        <div>
+          <h2 id="gamePredictionsTitle">Palpites do jogo</h2>
+          <p id="gamePredictionsSubtitle">Veja quem participou, quais foram os palpites e os ganhadores.</p>
+        </div>
+        <button class="modal-close" type="button" data-close-predictions-modal>×</button>
+      </header>
+      <div class="modal-body">
+        <div id="gamePredictionsSummary" class="bolao-numbers predictions-summary"></div>
+        <div id="gamePredictionsWinners" class="winner-callout"></div>
+        <div id="gamePredictionsList" class="prediction-list"></div>
+      </div>
+      <footer class="modal-footer">
+        <button class="btn btn-primary" type="button" data-close-predictions-modal>Fechar</button>
+      </footer>
+    </section>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script type="module" src="/assets/js/app.js?v=0.2.23"></script>
+</body>
+</html>
